@@ -3,7 +3,6 @@ use std::error::Error;
 use winit::{
     application::ApplicationHandler,
     event_loop::EventLoop,
-    raw_window_handle::{HasRawWindowHandle, HasWindowHandle},
     window::{Window, WindowAttributes},
 };
 
