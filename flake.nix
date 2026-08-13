@@ -30,14 +30,14 @@
             ]);
           rust-bin = rust-overlay.lib.mkRustBin { } pkgsCross.buildPackages;
           in
-            pkgsCross.callPackage ( { mkShell, pkg-config, qemu, openssl, stdenv, }:
+            pkgsCross.callPackage ( { mkShell, pkg-config, openssl, stdenv, }:
           mkShell {
             nativeBuildInputs = [
               (rust-bin.fromRustupToolchainFile ./toolchain.toml)
                 pkg-config
               ] ++ platformDeps;
 
-              depsBuildBuild = [ qemu ];
+              depsBuildBuild = [ pkgs.qemu ];
 
               buildInputs = [ 
                 pkg-config
@@ -51,6 +51,8 @@
               env = {
                 LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [ ]);
                 DYLD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [ ]);
+
+                QEMU_FD = "${pkgs.qemu}/share/qemu/edk2-aarch64-code.fd";
                 
                 CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER = "${pkgsCross.stdenv.cc.targetPrefix}cc";
                 CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER = "qemu-aarch64";
