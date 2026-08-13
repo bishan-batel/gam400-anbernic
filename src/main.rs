@@ -1,5 +1,7 @@
 use std::error::Error;
 
+use human_bytes::human_bytes;
+use memory_stats::memory_stats;
 use winit::{
     application::ApplicationHandler,
     event_loop::EventLoop,
@@ -37,6 +39,13 @@ impl ApplicationHandler for App {
             Ev::RedrawRequested => {
                 let window = self.window.as_ref().unwrap();
                 window.request_redraw();
+
+                if let Some(usage) = memory_stats() {
+                    println!(
+                        "Physical Memory: {}",
+                        human_bytes(usage.physical_mem as f64)
+                    );
+                }
             }
 
             _ => {}
