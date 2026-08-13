@@ -6,4 +6,11 @@ edition = "2024"
 [dependencies]
 human_bytes = "0.4.3"
 memory-stats = "1.2.0"
-winit = "0.30.13"
+winit = { version = "0.30.13", features = ["wayland"] }
+
+[profile.release]
+opt-level = "z"
+lto = true 
+strip = true
+codegen-units = 1
+panic = "abort"
